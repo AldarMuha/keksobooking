@@ -1,36 +1,37 @@
-const getData = (onSuccess, onError) => {
-  fetch('https://25.javascript.htmlacademy.pro/keksobooking/data')
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
+const getData = async (onSuccess, onError) => {
+  try {
+    const response = await fetch(
+      'https://25.javascript.htmlacademy.pro/keksobooking/data'
+    );
+
+    if (!response.ok) {
       throw new Error('Не удалось загрузить метки карт');
-    })
-    .then((data) => {
-      onSuccess(data);
-    })
-    .catch((error) => {
-      onError(error.message);
-    });
+    }
+
+    const data = await response.json();
+    onSuccess(data);
+  } catch (error) {
+    onError(error.message);
+  }
 };
 
-const sendData = (onSuccess, onFail, body) => {
-  fetch('https://25.javascript.htmlacademy.pro/keksobooking',
-    {
-      method: 'POST',
-      body,
-    },
-  )
-    .then((response) => {
-      if (response.ok) {
-        onSuccess();
-      } else {
-        onFail();
-      }
-    })
-    .catch(() =>
-      onFail());
-};
+const sendData = async (onSuccess, onFail, body) => {
+  try {
+    const response = await fetch(
+      'https://25.javascript.htmlacademy.pro/keksobooking',
+      {
+        method: 'POST',
+        body,
+      },
+    );
 
+    if (!response.ok) {
+      throw new Error('Не удалось отправить форму. Попробуйте ещё раз');
+    }
+    onSuccess();
+  } catch (error) {
+    onFail(error.message);
+  }
+};
 
 export { getData, sendData };

@@ -35,10 +35,10 @@ const onAvatarInputChange = () => {
   }
 };
 
-const onPhotoInputChange = () =>{
+const onPhotoInputChange = () => {
   const file = photoFile.files[0];
 
-  if(file && isValidType(file)){
+  if (file && isValidType(file)) {
     photoPreview.innerHTML = `<img src="${URL.createObjectURL(file)}" width="70" height="70">`;
   }
 };
@@ -49,8 +49,8 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'ad-form__element--error',
 }, false);
 
-function validateTitle(value){
-  return value.length>=30 && value.length<=100;
+function validateTitle(value) {
+  return value.length >= 30 && value.length <= 100;
 }
 
 pristine.addValidator(
@@ -66,12 +66,12 @@ const roomsOption = {
   '100': '0',
 };
 
-function validateRooms(){
+function validateRooms() {
   return roomsOption[roomsField.value].includes(capacityField.value);
 }
 
-function getRoomsErrorMessage(){
-  switch(roomsField.value){
+function getRoomsErrorMessage() {
+  switch (roomsField.value) {
     case '1':
       return '1 комната только для 1 гостя';
     case '2':
@@ -110,16 +110,16 @@ noUiSlider.create(sliderElement, {
   step: 1,
   connect: 'lower',
   format: {
-    to: function(value){
+    to: function (value) {
       return value.toFixed(0);
     },
-    from: function(value){
+    from: function (value) {
       return parseFloat(value);
     },
   },
 });
 
-sliderElement.noUiSlider.on('update', ()=>{
+sliderElement.noUiSlider.on('update', () => {
   price.value = sliderElement.noUiSlider.get();
 });
 
@@ -131,13 +131,13 @@ const minPrice = {
   'palace': 10000,
 };
 
-function validatePriceType(value){
-  return value.length && value>=minPrice[type.value] && value<=100000;
+function validatePriceType(value) {
+  return value.length && value >= minPrice[type.value] && value <= 100000;
 }
 
-function getPriceErrorMessage(){
-  if(price.value<=100000){
-    switch(type.value){
+function getPriceErrorMessage() {
+  if (price.value <= 100000) {
+    switch (type.value) {
       case 'bungalow':
         return 'Для Бунгало минимальная цена 0';
       case 'flat':
@@ -150,7 +150,7 @@ function getPriceErrorMessage(){
         return 'Для Дворца минимальная цена 10 000';
     }
   }
-  else{
+  else {
     return 'Максимальная цена 100 000';
   }
 }
@@ -164,11 +164,11 @@ pristine.addValidator(
 const timeIn = adForm.querySelector('#timein');
 const timeOut = adForm.querySelector('#timeout');
 
-timeIn.addEventListener('change', ()=> {
+timeIn.addEventListener('change', () => {
   timeOut.value = timeIn.value;
 });
 
-timeOut.addEventListener('change', ()=>{
+timeOut.addEventListener('change', () => {
   timeIn.value = timeOut.value;
 });
 
@@ -188,37 +188,37 @@ const adFormElements = [
   resetButton,
 ];
 
-const disabledAdForm = () =>{
+const disabledAdForm = () => {
   adForm.classList.add('ad-form--disabled');
-  adFormElements.forEach((adFormElement)=>{
+  adFormElements.forEach((adFormElement) => {
     adFormElement.setAttribute('disabled', true);
   });
 };
 
 const activeAdForm = () => {
   adForm.classList.remove('ad-form--disabled');
-  adFormElements.forEach((adFormElement)=>{
+  adFormElements.forEach((adFormElement) => {
     adFormElement.removeAttribute('disabled');
   });
 };
 
-const onSuccess = () =>{
+const onSuccess = () => {
   const successTemplate = document.querySelector('#success')
     .content.querySelector('.success');
   const successElement = successTemplate.cloneNode(true);
 
   document.body.append(successElement);
 
-  document.addEventListener('keydown', (evt)=>{
-    if(evt.key==='Escape'){
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
       successElement.remove();
     }
   });
 
-  document.addEventListener('click', ()=> successElement.remove());
+  document.addEventListener('click', () => successElement.remove());
 };
 
-const onError = () =>{
+const onError = () => {
   const errorTemplate = document.querySelector('#error')
     .content.querySelector('.error');
   const errorElement = errorTemplate.cloneNode(true);
@@ -226,24 +226,24 @@ const onError = () =>{
 
   document.body.append(errorElement);
 
-  document.addEventListener('keydown', (evt)=>{
-    if(evt.key==='Escape'){
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape') {
       errorElement.remove();
     }
   });
 
-  document.addEventListener('click', ()=> errorElement.remove());
+  document.addEventListener('click', () => errorElement.remove());
 
-  errorButton.addEventListener('click', ()=> errorElement.remove());
+  errorButton.addEventListener('click', () => errorElement.remove());
 };
 
-const onFormSubmit = (evt) =>{
+const onFormSubmit = (evt) => {
   evt.preventDefault();
   pristine.validate();
   const isValid = pristine.validate();
-  if(isValid){
+  if (isValid) {
     sendData(
-      ()=>{
+      () => {
         onSuccess();
         pristine.reset();
         sliderElement.noUiSlider.updateOptions({
@@ -270,7 +270,7 @@ const onFormSubmit = (evt) =>{
   }
 };
 
-const onResetClick = () =>{
+const onResetClick = () => {
   pristine.reset();
   sliderElement.noUiSlider.updateOptions({
     range: {
@@ -295,4 +295,4 @@ resetButton.addEventListener('click', onResetClick);
 avatarFile.addEventListener('change', onAvatarInputChange);
 photoFile.addEventListener('change', onPhotoInputChange);
 
-export {disabledAdForm, activeAdForm, address};
+export { disabledAdForm, activeAdForm, address };
